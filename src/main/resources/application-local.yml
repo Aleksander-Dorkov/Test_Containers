@@ -1,0 +1,20 @@
+spring:
+  sql:
+    init:
+      mode: always
+  datasource:
+    url: jdbc:postgresql://localhost:5432/my_db_name
+    password: 1234
+    username: sasho
+    hikari:
+      connection-timeout: 30000  # 30 seconds
+      minimum-idle: 5
+      maximum-pool-size: 10
+      idle-timeout: 600000  # 10 minutes
+      max-lifetime: 1800000  # 30 minutes
+      auto-commit: true
+      pool-name: MyHikariCP
+      validation-timeout: 5000  # 5 seconds
+      leak-detection-threshold: 60000  # 1 minute
+
+
