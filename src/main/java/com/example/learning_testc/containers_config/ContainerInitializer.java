@@ -1,4 +1,4 @@
-package com.example.learning_testc;
+package com.example.learning_testc.containers_config;
 
 import org.springframework.boot.context.event.ApplicationEnvironmentPreparedEvent;
 import org.springframework.context.ApplicationListener;

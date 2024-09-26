@@ -1,4 +1,4 @@
-package com.example.learning_testc;
+package com.example.learning_testc.containers_config;
 
 import com.github.dockerjava.api.model.HostConfig;
 import com.github.dockerjava.api.model.PortBinding;
