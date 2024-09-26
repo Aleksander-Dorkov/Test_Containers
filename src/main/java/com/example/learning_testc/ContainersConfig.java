@@ -35,18 +35,22 @@ public class ContainersConfig {
                 .withEnv("POSTGRES_PASSWORD", "1234")
                 .withEnv("POSTGRES_DB", "my_db_name")
                 .withExposedPorts(5432)
-                .withCreateContainerCmdModifier(cmd -> cmd.withHostConfig(
-                        HostConfig.newHostConfig().withPortBindings(PortBinding.parse("5432:5432"))
-                ));
+                .withCreateContainerCmdModifier(cmd -> cmd
+                        .withName("my-postgres")
+                        .withHostConfig(
+                                HostConfig.newHostConfig().withPortBindings(PortBinding.parse("5432:5432"))
+                        ));
     }
 
     @Bean(initMethod = "start", destroyMethod = "stop")
     public GenericContainer<?> redisContainer() {
         return new GenericContainer<>(DockerImageName.parse("redis:7.2.1"))
                 .withExposedPorts(6379)
-                .withCreateContainerCmdModifier(cmd -> cmd.withHostConfig(
-                        HostConfig.newHostConfig().withPortBindings(PortBinding.parse("6379:6379"))
-                ));
+                .withCreateContainerCmdModifier(cmd -> cmd
+                        .withName("my-redis")
+                        .withHostConfig(
+                                HostConfig.newHostConfig().withPortBindings(PortBinding.parse("6379:6379"))
+                        ));
     }
 
     @Bean(initMethod = "start", destroyMethod = "stop")
@@ -55,7 +59,10 @@ public class ContainersConfig {
                 .withNetwork(KAFKA_NETWORK)
                 .withNetworkAliases("zookeeper")
                 .withEnv("ZOOKEEPER_CLIENT_PORT", "2181")
-                .withEnv("ZOOKEEPER_TICK_TIME", "2000");
+                .withEnv("ZOOKEEPER_TICK_TIME", "2000")
+                .withCreateContainerCmdModifier(cmd -> {
+                    cmd.withName("my-zookeeper");
+                });
     }
 
     @Bean(initMethod = "start", destroyMethod = "stop")
@@ -71,9 +78,11 @@ public class ContainersConfig {
                 .withEnv("KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR", "1")
                 .withEnv("KAFKA_TRANSACTION_STATE_LOG_MIN_ISR", "1")
                 .withEnv("KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR", "1")
-                .withCreateContainerCmdModifier(cmd -> cmd.withHostConfig(
-                        HostConfig.newHostConfig().withPortBindings(PortBinding.parse("9092:9092"))
-                ))
+                .withCreateContainerCmdModifier(cmd -> cmd
+                        .withName("my-kafka")
+                        .withHostConfig(
+                                HostConfig.newHostConfig().withPortBindings(PortBinding.parse("9092:9092"))
+                        ))
                 .dependsOn(zookeeperContainer);
     }
 }
